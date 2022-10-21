@@ -18,6 +18,18 @@ const newToDo = async (description) => {
   }
 };
 
+// Get all to do
+const getAllToDo = async () => {
+  try {
+    const result = await db.query(
+      `SELECT * FROM todo`
+    );
+    return result.rows;
+  } catch (error) {
+    console.error(error.response ? error.response.body : error);
+  }
+};
+
 // Get all to do by user_id
 const getAllToDoById = async (id) => {
   try {
@@ -57,6 +69,7 @@ const deleteExistingToDo = async (id) => {
 
 module.exports = {
   newToDo,
+  getAllToDo,
   getAllToDoById,
   updateExistingToDoById,
   deleteExistingToDo,

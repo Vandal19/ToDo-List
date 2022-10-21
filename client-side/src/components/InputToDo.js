@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "axios"
 import {
   Box,
   Button,
@@ -12,26 +12,24 @@ import {
 } from "@mui/material";
 
 const InputToDo = () => {
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState("")
 
   const submitFormHandler = async (e) => {
     e.preventDefault();
     try {
-      const body = { description: description };
-      console.log(body);
+      const body = {description: description}
+      console.log(body)
       // const parseData = JSON.stringify(body)
-      await axios
-        .post("/toDo", { description })
-        .then((res) => console.log(res.data[0]));
+      await axios.post("/toDo", {description})
+      .then((res) => console.log(res.data[0]))
     } catch (error) {
       console.error(error.response ? error.response.body : error);
     }
-  };
+  }
 
   return (
     <Container maxWidth="xl">
-      <Grid
-        item
+      <Grid item
         xs={12}
         display="flex"
         justifyContent="center"
@@ -53,17 +51,17 @@ const InputToDo = () => {
         alignItems="center"
         sx={{ mt: 2 }}
       >
-        <Grid item component="form" xs={10}>
+        <Grid item component="form" xs={10.5}>
           <TextField
             fullWidth
             id="outlined-basic"
             label="What are you thinking of?"
             variant="outlined"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={e => setDescription(e.target.value)}
           />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={1.5}>
           <Button onClick={submitFormHandler} variant="contained" size="large">
             Submit
           </Button>

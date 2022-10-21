@@ -7,10 +7,10 @@ db.connect();
 const newToDo = async (description) => {
   try {
     const result = await db.query(
-      `INSERT INTO todo(id, user_id, description)
-       VALUES ($1, $2, $3)
+      `INSERT INTO todo(description)
+       VALUES ($1)
        RETURNING *;`,
-      [description.id, description.user_id, description.description]
+      [description]
     );
     return result.rows;
   } catch (error) {

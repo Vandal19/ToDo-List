@@ -5,19 +5,18 @@ const { newToDo, getAllToDoById, updateExistingToDoById, deleteExistingToDo } = 
 // Routes
 
 //Create a todo
-router.post("/:todo", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     console.log(req.params)
-    const description = {
-      ...req.body,
+    const description =  req.body.description
       // user_id: req.params.user_id
-    }
+
     console.log(description)
     const result = await newToDo(description)
     return res.send(result)
   } catch (error) {
     console.error(error.response ? error.response.body : error)
-  }
+  } 
 })
 
 // Get all todo list by Id

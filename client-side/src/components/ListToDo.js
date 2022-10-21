@@ -1,23 +1,32 @@
 import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import EditToDo from "./EditToDo"
 import {
   Button,
   Container,
   Divider,
   Grid,
   Paper,
-  ButtonBase,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import axios from "axios";
 
 const ListToDo = () => {
-  const [toDos, setToDo] = useState([]);
+  const [toDos, setToDos] = useState([]);
+
+  const deleteToDo = async (id) => {
+    try {
+      await axios.delete(`/toDo/${id}`)
+      .then(setToDos(toDos.filter(todo => todo.id !== id)));
+    } catch (error) {
+      console.error(error.response ? error.response.body : error);
+    }
+  }
 
   const getToDo = async () => {
     try {
       const response = await axios.get("/toDo");
-      setToDo(response.data);
+      setToDos(response.data);
     } catch (error) {
       console.error(error.response ? error.response.body : error);
     }
@@ -26,18 +35,12 @@ const ListToDo = () => {
   useEffect(() => {
     getToDo();
   }, []);
-  console.log(toDos);
-
-  // const item = toDos.map(todo => (
-  //   <Typography variant="body2" color="text.secondary">
-  //   {todo.description}
-  // </Typography>
-  // ))
+  // console.log(toDos);
 
   return (
     <Container maxWidth="xl">
-      <Grid item
-        xs={12}
+      <Grid
+        container
         display="flex"
         justifyContent="center"
         flexDirection="column"
@@ -60,43 +63,47 @@ const ListToDo = () => {
             backgroundColor: (theme) =>
               theme.palette.mode === "dark" ? "#1A2027" : "#fff",
           }}
+          key={todo.id}
         >
-          <Grid
-            key={todo.id}
-            xs={12}
-            container
-            spacing={1}
-            display="flex"
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            {/* <Grid container spacing={1.5}> */}
-              <Grid container direction="row" spacing={1.5}>
-                <Grid item xs={10.5} display="flex" direction="column"
-            justifyContent="center"
-            alignItems="flex-start">
-                  <Typography gutterBottom variant="subtitle1" component="div">
-                    No: {todo.id}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {todo.description}
-                  </Typography>
-                </Grid>
-                <Grid item xs={1.5} display="flex" direction="column"
-          justifyContent="center"
-          flexDirection="column"
-          alignItems="center">
-                  <Button sx={{ cursor: "pointer", mb: 1, width: 90}} variant="outlined">
-                    Edit
-                  </Button>
-                  <Button sx={{ cursor: "pointer", width: 90}} variant="outlined">
-                    Delete
-                  </Button>
-                </Grid>
+            <Grid container direction="row" spacing={1.5} >
+              <Grid
+                item
+                xs={10.5}
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="flex-start"
+              >
+                <Typography gutterBottom variant="subtitle1" component="div">
+                  No: {todo.id}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {todo.description}
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                xs={1.5}
+                display="flex"
+                justifyContent="center"
+                flexDirection="column"
+                alignItems="center"
+              >
+                {/* <Button */}
+                  {/* sx={{ cursor: "pointer", mb: 1, width: 90,}}
+                  variant="outlined"
+                > */}
+                  <EditToDo todo={todo}/>
+                {/* </Button> */}
+                <Button
+                  sx={{ cursor: "pointer", width: 90, backgroundColor: "red" }}
+                  variant="contained"
+                  onClick={() => deleteToDo(todo.id)}
+                >
+                  Delete
+                </Button>
               </Grid>
             </Grid>
-          {/* </Grid> */}
         </Paper>
       ))}
       <Divider />

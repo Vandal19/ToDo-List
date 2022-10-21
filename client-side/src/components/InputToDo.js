@@ -21,7 +21,8 @@ const InputToDo = () => {
       console.log(body)
       // const parseData = JSON.stringify(body)
       await axios.post("/toDo", {description})
-      .then((res) => console.log(res.data[0]))
+      .then((res) => setDescription(res.data[0]))
+      // window.location = "/";
     } catch (error) {
       console.error(error.response ? error.response.body : error);
     }
@@ -63,7 +64,7 @@ const InputToDo = () => {
         </Grid>
         <Grid item xs={1.5}>
           <Button onClick={submitFormHandler} variant="contained" size="large">
-            Submit
+            Add
           </Button>
         </Grid>
       </Grid>

@@ -1,20 +1,31 @@
 const express = require("express");
 const router = express.Router();
-const { newToDo, getAllToDoById, updateExistingToDoById, deleteExistingToDo } = require("../db/database")
+const { newToDo, getAllToDo, getAllToDoById, updateExistingToDoById, deleteExistingToDo } = require("../db/database")
 
 // Routes
 
 //Create a todo
-router.post("/:todo", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     console.log(req.params)
-    const description = {
-      ...req.body,
+    const description =  req.body.description
       // user_id: req.params.user_id
-    }
+
     console.log(description)
     const result = await newToDo(description)
     return res.send(result)
+  } catch (error) {
+    console.error(error.response ? error.response.body : error)
+  }
+})
+
+// Get all todo list
+router.get("/", async (req, res) => {
+  try {
+    const result = await getAllToDo()
+    if(result) {
+      res.send(result)
+    }
   } catch (error) {
     console.error(error.response ? error.response.body : error)
   }

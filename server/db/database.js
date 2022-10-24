@@ -7,10 +7,22 @@ db.connect();
 const newToDo = async (description) => {
   try {
     const result = await db.query(
-      `INSERT INTO todo(id, user_id, description)
-       VALUES ($1, $2, $3)
+      `INSERT INTO todo(description)
+       VALUES ($1)
        RETURNING *;`,
-      [description.id, description.user_id, description.description]
+      [description]
+    );
+    return result.rows;
+  } catch (error) {
+    console.error(error.response ? error.response.body : error);
+  }
+};
+
+// Get all to do
+const getAllToDo = async () => {
+  try {
+    const result = await db.query(
+      `SELECT * FROM todo`
     );
     return result.rows;
   } catch (error) {
@@ -57,6 +69,7 @@ const deleteExistingToDo = async (id) => {
 
 module.exports = {
   newToDo,
+  getAllToDo,
   getAllToDoById,
   updateExistingToDoById,
   deleteExistingToDo,

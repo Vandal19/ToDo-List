@@ -7,6 +7,7 @@ const morgan = require("morgan");
 
 // middleware
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan());
 

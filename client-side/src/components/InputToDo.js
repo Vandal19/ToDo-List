@@ -14,14 +14,18 @@ import {
 const InputToDo = () => {
   const [description, setDescription] = useState("")
 
-  const submitFormHandler = async (e) => {
-    e.preventDefault();
+  const submitFormHandler = async () => {
+    // e.preventDefault();
     try {
-      const body = {description: description}
-      console.log(body)
-      // const parseData = JSON.stringify(body)
-      await axios.post("/toDo", {description})
-      .then((res) => setDescription(res.data[0]))
+      const response = await axios.post("/toDo", {description})
+      console.log(response.data[0].description)
+      setDescription((prevState) => {
+        console.log(prevState)
+        return [response.data[0].description]
+      })
+      // .then((res) => setDescription(res.data[0]))
+      // .then((res) => console.log("res", res))
+      // console.log(res.data)
       // window.location = "/";
     } catch (error) {
       console.error(error.response ? error.response.body : error);
